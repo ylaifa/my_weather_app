@@ -4,13 +4,17 @@ import { Row, Col } from "antd";
 import "antd/dist/antd.css";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
+import CardView from "./components/Card";
 
 class App extends Component {
   constructor() {
     super();
 
     this.state = {
-      isLoading: true
+      isLoading: true,
+      errorMessage: "",
+      city: {},
+      list: []
     };
   }
 
@@ -26,7 +30,18 @@ class App extends Component {
       )
         .then(response => response.json())
         .then(response => {
-          console.log(response);
+          this.setState({
+            city: {
+              city_name: response.data.city_name,
+              country_code: response.data.country_code
+            },
+            list: response.data.data.slice(0, 5)
+          });
+        })
+        .catch(error => {
+          this.setState({
+            errorMessage: error.message
+          });
         })
         .finally(() => {
           this.setState({ isLoading: false });
@@ -53,7 +68,7 @@ class App extends Component {
     } else {
       renderedView = (
         <div>
-          <h3>Hello World !!</h3>
+          <CardView />
         </div>
       );
     }
