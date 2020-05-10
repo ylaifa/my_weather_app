@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
+import { Row, Col } from "antd";
+import "antd/dist/antd.css";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
 
-const apikey = "124d36c5bbebe70fb4caa75b0a1e9b8a";
+// const apikey = "124d36c5bbebe70fb4caa75b0a1e9b8a";
 
 const App = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -21,8 +23,14 @@ const App = () => {
   if (isLoading) {
     return (
       <>
-        <Loader type="Puff" color="#00BFFF" height={100} width={100} />
-        <p>Veuillez patienter, nous sommes entrain de vous localiser...</p>
+        <Row type="flex" align="middle">
+          <Col span={24}>
+            <Loader type="Circles" color="#00BFFF" height={80} width={80} />
+          </Col>
+          <Col span={10}>
+            Veuillez patienter, nous sommes entrain de vous localiser...
+          </Col>
+        </Row>
       </>
     );
   } else {
