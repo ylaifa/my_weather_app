@@ -4,7 +4,7 @@ import { Row, Col } from "antd";
 import "antd/dist/antd.css";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
-import CardView from "./components/Card";
+import Meteo from "./components/Meteo";
 
 class App extends Component {
   constructor() {
@@ -19,23 +19,25 @@ class App extends Component {
   }
 
   componentDidMount = () => {
-    const apikey = "124d36c5bbebe70fb4caa75b0a1e9b8a";
+    const apikey = "4ca67572e10349009eeed7f075392fbc";
     console.log("hello");
 
     navigator.geolocation.getCurrentPosition(position => {
       var coord = position.coords;
 
       fetch(
-        `https://api.openweathermap.org/data/2.5/weather?lat=${coord.latitude}&lon=${coord.longitude}&appid=${apikey}`
+        `https://api.weatherbit.io/v2.0/forecast/daily?lat=${coord.latitude}&lon=${coord.longitude}&key=${apikey}`
       )
         .then(response => response.json())
         .then(response => {
+          console.log(response);
           this.setState({
             city: {
-              city_name: response.data.city_name,
-              country_code: response.data.country_code
+              city_name: response.city_name,
+
+              country_code: response.country_code
             },
-            list: response.data.data.slice(0, 5)
+            list: response.data.slice(0, 5)
           });
         })
         .catch(error => {
@@ -51,7 +53,7 @@ class App extends Component {
 
   render() {
     let renderedView;
-    const { isLoading } = this.state;
+    const { isLoading, list } = this.state;
     if (isLoading) {
       renderedView = (
         <>
@@ -68,7 +70,7 @@ class App extends Component {
     } else {
       renderedView = (
         <div>
-          <CardView />
+          <Meteo list={list} />
         </div>
       );
     }
